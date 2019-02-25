@@ -3,30 +3,29 @@ import uuid from 'uuid';
 import { connect } from 'react-redux';
 import { addQuote } from '../actions/quotes';
 
-export class QuoteForm extends Component {
 
-  constructor(props) {
-    super(props)
-    this.state = {
-      content: '',
-      author: ''
-    }
+class QuoteForm extends Component {
+
+  state = {
+    content: '',
+    author: ''
   }
 
-  handleOnChange = e => {
+  handleOnChange = event => {
+    const { value, name } = event.target;
     this.setState({
-        [e.target.name]: e.target.value
-    })
+      [name]: value
+    });
   }
 
-  handleOnSubmit = e => {
-    e.preventDefault()
-    const quote = Object.assign({}, this.state, {id: uuid()}, {votes: 0})
-    this.props.addQuote(quote)
+  handleOnSubmit = event => {
+    event.preventDefault();
+    const quote = {...this.state, id: uuid() };
+    this.props.addQuote(quote);
     this.setState({
       content: '',
       author: ''
-    })
+    });
   }
 
   render() {
@@ -42,8 +41,8 @@ export class QuoteForm extends Component {
                     <div className="col-md-5">
                       <textarea
                         className="form-control"
-                        value={this.state.content}
                         name="content"
+                        value={this.state.content}
                         onChange={this.handleOnChange}
                       />
                     </div>
@@ -54,8 +53,8 @@ export class QuoteForm extends Component {
                       <input
                         className="form-control"
                         type="text"
-                        value={this.state.author}
                         name="author"
+                        value={this.state.author}
                         onChange={this.handleOnChange}
                       />
                     </div>
@@ -75,4 +74,4 @@ export class QuoteForm extends Component {
   }
 }
 
-export default connect(null, {addQuote})(QuoteForm);
+export default connect(null, { addQuote })(QuoteForm);
